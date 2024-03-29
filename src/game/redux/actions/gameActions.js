@@ -1,71 +1,28 @@
-import { store } from "../store";
-import { WIN_PATTERNS } from "../../constants/constants";
+export const setCurrentPlayer = (currentPlayer) => ({
+  type: "SET_CURRENT_PLAYER",
+  payload: currentPlayer,
+});
 
-export function playersMove(el, index) {
-  const { currentPlayer, isGameEnded, field } = store.getState();
+export const setNewField = (currentField) => ({
+  type: "SET_NEW_FIELD",
+  payload: currentField,
+});
 
-  if (!isGameEnded) {
-    let copyField = Object.assign([], field);
-    let indexValue = index;
-    if (el === "") {
-      copyField.splice(indexValue, 1, currentPlayer);
+export const setIsGameEnded = (check) => ({
+  type: "SET_IS_GAME_ENDED",
+  payload: check,
+});
 
-      if (currentPlayer === "X") {
-        store.dispatch({
-          type: "MOVE",
-          payload: { field: copyField, currentPlayer: "O" },
-        });
-      } else {
-        store.dispatch({
-          type: "MOVE",
-          payload: { field: copyField, currentPlayer: "X" },
-        });
-      }
-      checkDraw(copyField);
-      getWinner(copyField, isGameEnded);
-    }
-  }
-}
+export const setWinner = (winner) => ({
+  type: "SET_WINNER",
+  payload: winner,
+});
 
-export function resetGame() {
-  store.dispatch({
-    type: "REBOOT",
-  });
-}
+export const setIsDraw = (IsDraw) => ({
+  type: "IS_DRAW",
+  payload: IsDraw,
+});
 
-function getWinner(field, isGameEnded) {
-  if (!isGameEnded) {
-    for (let i = 0; i < WIN_PATTERNS.length; i++) {
-      let el = WIN_PATTERNS[i];
-      let fildEl = [];
-      for (let j = 0; j < el.length; j++) {
-        fildEl.push(field[el[j]]);
-      }
-      if (fildEl.join("") === "XXX") {
-        store.dispatch({
-          type: "PLAYER_WON",
-          payload: { isGameEnded: true, currentPlayer: "X" },
-        });
-      }
-      if (fildEl.join("") === "OOO") {
-        store.dispatch({
-          type: "PLAYER_WON",
-          payload: { isGameEnded: true, currentPlayer: "O" },
-        });
-      }
-    }
-  }
-}
-
-function checkDraw(field) {
-  let x = field.every((el) => {
-    return el !== "";
-  });
-
-  if (x) {
-    store.dispatch({
-      type: "DRAW",
-      payload: true,
-    });
-  }
-}
+export const resetartGame = () => ({
+  type: "REBOOT",
+});

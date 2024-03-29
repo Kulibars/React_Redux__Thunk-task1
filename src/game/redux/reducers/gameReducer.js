@@ -1,5 +1,3 @@
-import { MOVE, REBOOT, PLAYER_WON, DRAW } from "../types";
-
 const initialGameState = {
   field: ["", "", "", "", "", "", "", "", ""],
   currentPlayer: "X",
@@ -10,29 +8,43 @@ const initialGameState = {
 export const gameReducer = (state = initialGameState, action) => {
   const { type, payload } = action;
   switch (type) {
-    case MOVE: {
+    case "SET_CURRENT_PLAYER": {
       return {
         ...state,
-        ...payload,
-      };
-    }
-    case REBOOT: {
-      return {
-        ...initialGameState,
+        currentPlayer: payload,
       };
     }
 
-    case PLAYER_WON: {
+    case "SET_NEW_FIELD": {
       return {
         ...state,
-        ...payload,
+        field: payload,
       };
     }
-    case DRAW: {
+
+    case "SET_IS_GAME_ENDED": {
+      return {
+        ...state,
+        isGameEnded: payload,
+      };
+    }
+
+    case "SET_WINNER": {
+      return {
+        ...state,
+        currentPlayer: payload,
+      };
+    }
+
+    case "IS_DRAW": {
       return {
         ...state,
         isDraw: payload,
       };
+    }
+
+    case "REBOOT": {
+      return initialGameState;
     }
 
     default:
